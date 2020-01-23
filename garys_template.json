@@ -1,0 +1,55 @@
+{
+	"AWSTemplateFormatVersion" : "2010-09-09",
+
+	"Description": "KG DevOps interview CF stack",
+
+	"Resources": {
+		"GarysLoadBalancer" : {
+			"Type" : "AWS::ElasticLoadBalancing::LoadBalancer",
+			"Properties" : {
+				"AvailabilityZones" : [ "e.g. eu-west-2" ],
+				"Instances" : [
+					{ "Ref" : "InterviewEC2Instance" }
+				],
+				"Listeners" : [ {
+					"LoadBalancerPort" : "80",
+					"InstancePort" : "80",
+					"Protocol" : "HTTP"
+				} ],
+				"HealthCheck" : {
+					"Target" : "HTTP:80/",
+					"HealthyThreshold" : "3",
+					"UnhealthyThreshold" : "5",
+					"Interval" : "30",
+					"Timeout" : "5"
+				}
+			}
+		},
+		"InterviewEC2Instance": {
+			"Type": "AWS::EC2::Instance",
+			"Metadata" : {
+      				"AWS::CloudFormation::Init" : {
+        				"config" : {
+          					"commands" : {
+            						"update" : {
+                						"command" : "yum update -y"
+          							}
+							}
+						}
+					}
+				},
+			"Properties": {
+				"InstanceType": "t2.nano",
+				"ImageId": "ami-047bb4163c506cd98",
+				"Tags" : [ {"Key" : "Name", "Value" : "Gary Brett"}],
+				"SourceDestCheck" : "false"
+            		}		
+        	}
+    	},   
+	"Outputs" : {
+		"InstanceID" : {
+			"Description": "The Instance ID",  
+			"Value" : { "Ref" : "InterviewEC2Instance" }
+		}
+	}
+}
