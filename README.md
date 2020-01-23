@@ -6,7 +6,7 @@ I think i missed one of the bonus questions on CF, but hopefully everything else
 
 FYI, ive used argparse on my python script, so the syntax is , for example ...
 
-# ./getBeersGreaterThan.py --abv 6
+./getBeersGreaterThan.py --abv 6
 
 Thanks
 Gary
